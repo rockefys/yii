@@ -88,6 +88,13 @@ $('.abtn').on('click', function(){
     return false;
 });
 
+$('.per-page').change(function(){
+    var p = $(this).val();
+    var link = $(this).data('href');
+    window.location.href = link+p;
+    
+});
+
 });
 function loading(){
 $('.loading').show();

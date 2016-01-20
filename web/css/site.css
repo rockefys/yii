@@ -120,6 +120,11 @@ Bootstrap hack
     border-bottom-left-radius: 0;
 }
 
+.form-inline .input-group .input-group-addon{
+    width:30%;
+}
+
+
 /*
 alert
  */
@@ -167,6 +172,36 @@ alert
 .alert{
     padding:10px 15px;
 }
+
+
+
+.pagination .input-page,.pagination .per-page{
+    width:26px; 
+    font-size: 13px;
+    padding: 0px 0px;
+    display: inline-block;
+}
+.pagination .per-page{
+    width:54px;
+    height: 26px;
+    margin: 2px;
+    
+}
+.pagination .jump-to a{
+    color: #333;
+    font-size: 14px;
+    font-weight: normal;
+    padding:1px 12px;
+}
+.pagination .jump-to a:hover,.pagination .jump-to a:focus{
+    color: #333;
+    font-weight: normal;
+    background-color:#fff !important;
+    border-top: solid 1px #ccc; 
+    border-bottom: solid 1px #ccc;
+    text-decoration: none;
+}
+
 
 /*
 loading

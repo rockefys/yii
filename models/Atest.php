@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use common\models\ActiveQueryModelInterface;
 /**
  * This is the model class for table "atest".
  *
@@ -20,7 +20,7 @@ use Yii;
  * @property string $tinytext
  * @property string $time
  */
-class Atest extends \yii\db\ActiveRecord
+class Atest extends \yii\db\ActiveRecord implements ActiveQueryModelInterface
 {
     /**
      * @inheritdoc
@@ -62,7 +62,7 @@ class Atest extends \yii\db\ActiveRecord
             'decimal' => Yii::t('app', 'Decimal'),
             'smallint' => Yii::t('app', 'Smallint'),
             'tinytext' => Yii::t('app', 'Tinytext'),
-            'time' => Yii::t('app', 'Time'),
+            'time' => Yii::t('app', 'Time')
         ];
     }
 
@@ -102,43 +102,39 @@ class Atest extends \yii\db\ActiveRecord
     {
         return [
         //'text|textarea|select|checkbox|date|datetime|time|refer|list|func',
-            'id' => 'label',
-            'user_id' => 'refer',
-            'textbox' => 'text',
-            'password' => 'password',
-            'select' => ['select', [ 'a' => 'A', 'b' => 'B', 'c' => 'C', ], ['prompt' => '']],
-            'textarea' => 'textarea',
-            'datetime' => 'datetime',
-            'checkbox' => 'checkbox',
-            'decimal' => 'decimal',
-            'smallint' => ['list',[ 'a' => 'A', 'b' => 'B', 'c' => 'C', ],[]],
-            'tinytext' => 'textarea',
-            'time' => 'time'
+            'id'        => '',
+            'user_id'   => '',
+            'textbox'   => ['text'],
+            'password'  => ['password'],
+            'select'    => ['select','' ,[ 'a' => 'A', 'b' => 'B', 'c' => 'C' ], ['prompt' => '']],
+            'textarea'  => ['textarea'],
+            'datetime'  => ['datetime'],
+            'checkbox'  => ['checkbox'],
+            'decimal'   => ['number'],
+            'smallint'  => ['list','',[ 'a' => 'A', 'b' => 'B', 'c' => 'C', ],[]],
+            'tinytext'  => ['textarea'],
+            'time'      => ['time'],
+            'query'     => ['submit',Yii::t('app','Query'),['class'=> 'btn btn-info']]
         ];
     }
 
     public static function queryFields()
     {
         return [
+            'id' => '',
             'textbox' => [],
             'select' => [],
             'datetime' => [],
             'decimal' => [],
             'time' => [],
             'user_id' => array(
-                'query_type' => 'eq|between|like|in|lt|gt|gte|lte|exists|null|notnull|func',
-                'name'     => 'user_id',
-                'required'  => true,
-                'default'   => date('Y-m-d'),
-                'filter'    => [1=> 123],
-                'func'      => '',
-                'join'      => [],
-                'relation' => array(
-                    'relation_type' => 'during',
-                    'field'     => 'day',
-                    'default' => 1
-                ),
-            )
+                'query_type' => 'between',//|between|like|in|lt|gt|gte|lte|exists|null|notnull|func
+                'field'     => 'user_id',
+                'required'  => false,
+                'default'   => 1,
+                'join'      => []
+            ),
+            'query' => []
         ];
     }
 
@@ -148,6 +144,6 @@ class Atest extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new AtestQuery(get_called_class());
+        return new \common\data\FormQuery(get_called_class());
     }
 }

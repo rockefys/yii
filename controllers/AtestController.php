@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Hprose\Http\Client;
 
 /**
  * AtestController implements the CRUD actions for Atest model.
@@ -32,10 +33,11 @@ class AtestController extends Controller
      */
     public function actionIndex()
     {
+        $pageSize = Yii::$app->Request->get('per-page',Yii::$app->params['pageSize']);
         $dataProvider = new ActiveDataProvider([
             'query' => Atest::find(),
             'pagination' => [
-                'pageSize' => 5,
+                'pageSize' => $pageSize
             ],
         ]);
         $model = new Atest();
@@ -122,5 +124,70 @@ class AtestController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionTest()
+    {
+        $test = new Client("http://127.0.0.1:80/index.php?r=site/test");
+        $test = new Client();
+        dump($test);
+    $args = array("world");
+try {
+    $mid = memory_get_usage();
+    $res = $test->ee();dump($res);
+    $end = memory_get_usage();
+    echo 'argv:',($end - $mid)/1024 ,'kb' , '<br>';
+    exit();
+}
+catch (Exception $e) {
+    var_dump($e->getMessage());
+}
+try {
+    //$test->ee();
+}
+catch (Exception $e) {
+    var_dump($e->getMessage());
+}
+$test->hello('async world', function($result, $args, $error) {
+    echo "result: ";
+    var_dump($result);
+    echo "args: ";
+    var_dump($args);
+    echo "error: ";
+    var_dump($error);
+});
+
+$test->e(function($result, $args, $error) {
+    echo "result: ";
+    var_dump($result);
+    echo "args: ";
+    var_dump($args);
+    echo "error: ";
+    var_dump($error->getMessage());
+});
+var_dump($test->hello("world"));
+$test->ee(function($result, $args, $error) {
+    echo "result: ";
+    var_dump($result);
+    echo "args: ";
+    var_dump($args);
+    echo "error: ";
+    var_dump($error->getMessage());
+});
+$test->dnslookup("www.baidu.com", function($result, $args) {
+    echo "result: ";
+    var_dump($result);
+    echo "args: ";
+    var_dump($args);
+});
+echo $test->asyncHello("WORLD");
+$test->asyncHello("WORLD", function($result) {
+    echo "result: ";
+    var_dump($result);
+});
+$test->asyncHello("WORLD2", function($result) {
+    echo "result: ";
+    var_dump($result);
+});
     }
 }
